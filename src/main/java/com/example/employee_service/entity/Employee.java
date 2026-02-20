@@ -36,6 +36,9 @@ public class Employee {
     @Column(name = "qualification_id", nullable = false)
     private Long qualificationId;
 
+//    @Column(name = "is_active")
+//    private Boolean isActive = true;
+
     // audit fields
     @CreationTimestamp
     @Column(name = "create_at", nullable = false, updatable = false)
