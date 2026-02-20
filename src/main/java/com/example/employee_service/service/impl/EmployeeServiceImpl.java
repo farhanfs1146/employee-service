@@ -5,6 +5,7 @@ import com.example.employee_service.dto.response.EmployeeResponse;
 import com.example.employee_service.mapper.EmployeeMapper;
 import com.example.employee_service.repsitory.EmployeeRepository;
 import com.example.employee_service.service.EmployeeService;
+import com.example.employee_service.service.MasterDataValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final MasterDataValidationService masterDataValidationService;
 
     @Override
     public List<EmployeeResponse> getAllEmployees() {
@@ -30,6 +32,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest employeeRequest) {
+
+        // validate the qualification exist by id in master data.
+        masterDataValidationService.validateDepartmentById(employeeRequest.qualificationId());
+
         var newEmployee = employeeMapper.toEntity(employeeRequest);
         employeeRepository.save(newEmployee);
         return employeeMapper.toEmployeeResponse(newEmployee);
