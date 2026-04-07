@@ -1,9 +1,10 @@
 package com.example.employee_service.service.impl;
 
-import com.example.employee_service.dto.event.EmployeeCreatedEvent;
+import com.example.employee_service.event.EmployeeEvent;
 import com.example.employee_service.dto.request.EmployeeRequest;
 import com.example.employee_service.dto.response.EmployeeResponse;
-import com.example.employee_service.events.EmployeeKafkaProducer;
+import com.example.employee_service.producer.EmployeeKafkaProducer;
+import com.example.employee_service.event.EventType;
 import com.example.employee_service.exception.ValidationException;
 import com.example.employee_service.mapper.EmployeeMapper;
 import com.example.employee_service.repsitory.EmployeeRepository;
@@ -26,7 +27,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     // event working
     private final EmployeeKafkaProducer employeeKafkaProducer;
-
 
     @Override
     public List<EmployeeResponse> getAllEmployees() {
@@ -53,18 +53,41 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // create & fire event.
         // 🔥 EVENT FIRE KARO
-        EmployeeCreatedEvent event = new EmployeeCreatedEvent(
+        EmployeeEvent event = new EmployeeEvent(
                 newEmployee.getId(),
-                newEmployee.getFirstName()
+                newEmployee.getFirstName(),
+                EventType.CREATE
         );
 
         employeeKafkaProducer.sendEmployeeCreatedEvent(event);
-        log.info("🔥 EVENT Sent to Consumer: {}", event);
+        log.info("Event Sent to Consumer as New Employee Created: {}", event);
         return employeeMapper.toEmployeeResponse(newEmployee);
     }
 
     @Override
     public EmployeeResponse updateEmployee(Long id, EmployeeRequest employeeRequest) {
-        return null;
+
+        var employee = employeeRepository.findById(id).orElseThrow(()-> new RuntimeException("Employee does not exist with id " + id));
+
+        // validate the qualification exist by id in master data.
+        masterDataValidationService.validateDepartmentById(employeeRequest.qualificationId());
+        employee.setFirstName(employeeRequest.firstName());
+        employee.setLastName(employeeRequest.lastName());
+        employee.setFatherName(employeeRequest.fatherName());
+        employee.setMotherName(employeeRequest.motherName());
+        employee.setQualificationId(employeeRequest.qualificationId());
+        employeeRepository.save(employee);
+
+
+        // create & fire event.
+        EmployeeEvent event = new EmployeeEvent(
+                employee.getId(),
+                employee.getFirstName(),
+                EventType.UPDATE
+        );
+        employeeKafkaProducer.sendEmployeeUpdateEvent(event);
+        log.info("Event Sent to Consumer as Employee Updated: {}", event);
+
+        return employeeMapper.toEmployeeResponse(employee);
     }
 }
