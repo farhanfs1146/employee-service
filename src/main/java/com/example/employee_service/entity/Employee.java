@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,8 +37,14 @@ public class Employee {
     @Column(name = "qualification_id", nullable = false)
     private Long qualificationId;
 
-//    @Column(name = "is_active")
-//    private Boolean isActive = true;
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "is_active", nullable = false)
+    private Boolean isActive = true;
 
     // audit fields
     @CreationTimestamp
