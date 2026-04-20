@@ -1,4 +1,4 @@
-package com.example.employee_service.scheduler;
+package com.example.employee_service.job;
 
 import com.example.employee_service.schedulerservice.BirthdaySchedulerService;
 import lombok.RequiredArgsConstructor;

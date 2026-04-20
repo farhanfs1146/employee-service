@@ -1,5 +1,6 @@
 package com.example.employee_service.scheduler;
 
+import com.example.employee_service.job.BirthdayNotificationJob;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
