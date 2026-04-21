@@ -25,6 +25,15 @@ public class BirthdayScheduler {
                 .withIdentity("birthday-trigger", "employee-jobs")
                 .withSchedule(
                         CronScheduleBuilder.cronSchedule("0 */1 * * * ?") // every mint
+                        // second minute hour day month dayOfWeek
+                        // 0      */1    *    *    *      ?
+                        // like:
+                        // run at second 0
+                        // every 1 minute
+                        // every hour
+                        // every month
+                        // every day
+
                 )
                 .build();
 
