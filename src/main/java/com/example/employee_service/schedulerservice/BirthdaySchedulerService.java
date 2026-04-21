@@ -41,7 +41,7 @@ public class BirthdaySchedulerService {
             try {
                 notificationClient.sendBirthdayWish(
                         employee.getEmail(),
-                        "Happy Birthday " + employee.getFirstName() + " " + employee.getLastName()
+                        employee.getFirstName() + " " + employee.getLastName()
                 );
                 log.info("Birthday notification sent for employeeId={}", employee.getId());
 

@@ -24,7 +24,7 @@ public class BirthdayScheduler {
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity("birthday-trigger", "employee-jobs")
                 .withSchedule(
-                        CronScheduleBuilder.cronSchedule("0 */1 * * * ?") // every mint
+                        CronScheduleBuilder.cronSchedule("0 */5 * * * ?") // every mint
                         // second minute hour day month dayOfWeek
                         // 0      */1    *    *    *      ?
                         // like:

@@ -23,7 +23,7 @@ public class Employee {
     private Long id;
 
     @Column(name = "card_number", nullable = false, unique = true)
-    private String cardNumber;
+    private Long cardNumber;
 
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;

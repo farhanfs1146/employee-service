@@ -17,6 +17,10 @@ public record EmployeeRequest(
         @Schema(description = "Employee last name", example = "Ali")
         String lastName,
 
+        @NotNull(message = "Card No. is required")
+        @Schema(description = "Card Number", example = "13411")
+        Long cardNumber,
+
         @NotBlank(message = "Father name is required")
         @Size(max = 150, message = "Father name must not exceed 150 characters")
         @Schema(description = "Employee father name", example = "Tariq Ali")

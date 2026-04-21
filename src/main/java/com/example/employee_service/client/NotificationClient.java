@@ -10,6 +10,6 @@ public interface NotificationClient {
     @PostMapping("/notifications/birthday")
     void sendBirthdayWish(
             @RequestParam String email,
-            @RequestParam String message
+            @RequestParam String employeeName
     );
 }
